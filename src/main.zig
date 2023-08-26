@@ -370,7 +370,7 @@ test "training dimensions match comptime and do something" {
     }
 
     // gotta have something to train
-    var network: MLPRegressor(F, I, 8, O) = undefined;
+    var network: MLPRegressor(F, I, 7, O) = undefined;
     network.init(rand, &x, &y);
     var last_err: F = undefined;
 

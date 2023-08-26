@@ -67,7 +67,13 @@ test "dimensions line up at comptime, and the network learns a little" {
     }
 
     // gotta have something to train
-    var network: zsmallnet.MLPRegressor(F, I, 8, O) = undefined;
+    // 
+    // as much as possible you want your hidden dimension
+    // (the 7 below) to be 1 less than a power of 2, since
+    // we add an extra dimension in the intermediate computations,
+    // and that helps the compiler be able to generate
+    // better instructions.
+    var network: zsmallnet.MLPRegressor(F, I, 7, O) = undefined;
     network.init(rand, &x, &y);
     var last_err: F = undefined;
 
