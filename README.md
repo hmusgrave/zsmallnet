@@ -21,8 +21,8 @@ Zig has a package manager!!! Do something like the following.
     .dependencies = .{
         .zsmallnet = .{
             .name = "zsmallnet",
-	    .url = "https://github.com/hmusgrave/zsmallnet/archive/refs/tags/0.0.0.tar.gz",
-	    // (I'll fill out the .hash field momentarily)
+	    .url = "https://github.com/hmusgrave/zsmallnet/archive/refs/tags/0.0.1.tar.gz",
+	    .hash = "122060be45ddd63e0ceb2bec7f42f8a002cdf27ea6ecbb376b2677ae0b04b1e2447e",
         },
     },
 }
