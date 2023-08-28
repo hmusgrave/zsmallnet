@@ -4,9 +4,31 @@ simple neural network designed for inlineable code optimizations
 
 ## Purpose
 
-Small neural networks can unpack into almost no instructions to fit into a 20ns latency budget. They're capable of adequately solving more problems than people give them credit for, and many of those problems are extremely finicky to get right via classical programming (looking at you libinput).
+Small neural networks can execute in 20 nanoseconds, be deployed nearly anywhere, have no startup time, and solve way more problems than people give them credit for. This library is likely to be a good option when some combination of the following apply:
 
-I used to just write this sort of thing in assembly, but a heaping helping of "inline" lets Zig generate good-enough code (not even 10x worse). An example application is touchpad phantom event filtering in an X driver. Libinput locks the machine up misprocessing the stream of garbage, but there are only thousands of events per second, so a small neural network only uses 0.02% of a core to do the same work while maintaining stellar accuracy (0% fake events accepted, 0.3% real events dropped -- adequate for that use case because you don't get pointer drift but the observed behavior of dropped events is just that the mouse moves 0.3% slower).
+1. You need zero latency at startup (can't afford to wait to import tensorflow or pytorch)
+
+2. You have tight constraints on throughput or battery life (need to process ten thousand touchpad events per second on a tiny fraction of a CPU core)
+
+3. You need to build once and deploy anywhere (WASM, MacOS, Windows, Linux drivers, embedded devices, ...)
+
+4. The function you're modeling isn't too complicated (scanning an image to find the corner coordinates of a curved page you want to turn into a pdf is fine, trying to be ChatGPT with a 1-hidden-layer inlined network probably isn't)
+
+## Example Use Cases
+
+The motivating use case for me writing this was a touchpad driver. I used assembly for the original, but this is the Zig code I would have wanted at the time. A network well under 2KB (including the optimized code) filtered out all the phantom touchpad movements while only tossing out 0.3% of the real movements (which had a net effect of making motions around 0.3% slower than they would have been). Neural networks are general function approximators, but other tasks that might be well suited include:
+
+1. Adding an AI to the NPCs in games you're making
+
+2. Detecting if a user is _actually_ navigating away from the page
+
+3. Detecting a signal phrase to gate a larger computation (kind of like how "hey siri" or "ok google" might work under the hood)
+
+4. Detecting the boundaries of a page in a mobile camera->pdf scanner app
+
+5. Generating human-like mouse movements to wire to your captcha solver
+
+And so on. Extremely tiny neural networks (7, 15, 31 hidden nodes) are surprisingly capable.
 
 ## Installation
 
